@@ -23,13 +23,22 @@ namespace Elysium.UI
         }
 
         private void SetupScreen(UI_Screen _config)
-        {
+        {            
+            EnableAllScreens();
             SetupCanvas(_config);
             SetupEnableButton(_config);
             SetupDisableButton(_config);
             HandleStartStatus(_config);
         }
 
+        private void EnableAllScreens()
+        {
+            foreach(var s in Screens)
+            {
+                s.gameObject.SetActive(true);
+            }
+        }
+        
         private void SetupCanvas(UI_Screen _config)
         {
             _config.Panel.sortingOrder = _config.SortOrder;
