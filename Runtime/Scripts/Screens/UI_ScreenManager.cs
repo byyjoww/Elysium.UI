@@ -23,8 +23,7 @@ namespace Elysium.UI
         }
 
         private void SetupScreen(UI_Screen _config)
-        {            
-            EnableAllScreens();
+        {
             SetupCanvas(_config);
             SetupEnableButton(_config);
             SetupDisableButton(_config);
@@ -81,7 +80,7 @@ namespace Elysium.UI
 
         private void OnValidate()
         {
-            Screens = GetComponentsInChildren<UI_Screen>();
+            Screens = GetComponentsInChildren<UI_Screen>(true);
         }
     }
 }
