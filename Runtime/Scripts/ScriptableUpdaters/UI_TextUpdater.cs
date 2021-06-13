@@ -5,7 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class UI_TextArrayUpdater : MonoBehaviour
+public class UI_TextUpdater : MonoBehaviour
 {
     [SerializeField] private TMP_Text textComponent;
     [SerializeField] private ValueSO[] uiText;
