@@ -30,6 +30,14 @@ namespace Elysium.UI
             HandleStartStatus(_config);
         }
 
+        private void EnableAllScreens()
+        {
+            foreach(var s in Screens)
+            {
+                s.gameObject.SetActive(true);
+            }
+        }
+        
         private void SetupCanvas(UI_Screen _config)
         {
             _config.Panel.sortingOrder = _config.SortOrder;
@@ -72,7 +80,7 @@ namespace Elysium.UI
 
         private void OnValidate()
         {
-            Screens = GetComponentsInChildren<UI_Screen>();
+            Screens = GetComponentsInChildren<UI_Screen>(true);
         }
     }
 }
