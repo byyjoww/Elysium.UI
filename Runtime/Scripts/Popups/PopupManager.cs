@@ -5,35 +5,38 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Elysium.UI
 {
-    public class UI_PopupManager : Singleton<UI_PopupManager>
+    [CreateFromPrefab("PopupCanvas")]
+    public class PopupManager : Singleton<PopupManager>
     {
         [Separator("Debug", true)]
-        [SerializeField, ReadOnly] private Popup DEBUGActivePopup = default;
-        [SerializeField, ReadOnly] private Popup[] DEBUGQueuedPopups = default;
+        [SerializeField, ReadOnly] private PopupConfig DEBUGActivePopup = default;
+        [SerializeField, ReadOnly] private PopupConfig[] DEBUGQueuedPopups = default;
 
         [Separator("Styles", true)]
-        [SerializeField] private UI_Popup genericPopupPrefab = default;
+        [SerializeField] private Popup genericPopupPrefab = default;
 
         public event UnityAction OnPopupAdded;
         public event UnityAction OnActivePopupClosed;
         
-        private Popup activePopup = default;
-        private Queue<Popup> popupQueue = default;        
+        private PopupConfig activePopup = default;
+        private Queue<PopupConfig> popupQueue = default;        
 
 
         // ---------------- GENERIC POPUP STYLE ----------------
 
-        public static void CreateGenericPopup(Popup _popup) => Instance.EnqueuePopup(_popup, Instance.genericPopupPrefab);
+        public static void CreateGenericPopup(PopupConfig _popup) => Instance.EnqueuePopup(_popup, Instance.genericPopupPrefab);
 
         // -----------------------------------------------------
 
         protected override void Awake()
         {
+            SetupCanvas();
             base.Awake();
-            popupQueue = new Queue<Popup>();
+            popupQueue = new Queue<PopupConfig>();
             DEBUGQueuedPopups = popupQueue.ToArray();
             activePopup = null;
             DEBUGActivePopup = null;
@@ -41,7 +44,20 @@ namespace Elysium.UI
             OnActivePopupClosed += ResetActivePopup;
         }
 
-        private void EnqueuePopup(Popup _popup, IPopup _style)
+        private void SetupCanvas()
+        {
+            Canvas c = gameObject.GetComponent<Canvas>(); 
+            if (c == null) { c = gameObject.AddComponent<Canvas>(); }
+            c.sortingOrder = 999;
+
+            CanvasScaler cs = gameObject.GetComponent<CanvasScaler>();
+            if (cs == null) { cs = gameObject.AddComponent<CanvasScaler>(); }
+
+            GraphicRaycaster gr = gameObject.GetComponent<GraphicRaycaster>();
+            if (gr == null) { gr = gameObject.AddComponent<GraphicRaycaster>(); }
+        }
+
+        private void EnqueuePopup(PopupConfig _popup, IPopup _style)
         {
             _popup.Prefab = _style;
             popupQueue.Enqueue(_popup);
@@ -50,7 +66,7 @@ namespace Elysium.UI
 
         private void InstantiatePopup()
         {
-            Popup popup = popupQueue.Dequeue();
+            PopupConfig popup = popupQueue.Dequeue();
             // Debug.Log("dequeued popup " + popup.Description);
             IPopup runtimePopup = popup.Prefab.Create(transform);
             runtimePopup.Setup(popup);
@@ -89,8 +105,8 @@ namespace Elysium.UI
         [ContextMenu("Enqueue Dummy Popup")]
         private void EnqueueDummyPopup()
         {
-            var popup = new Popup("Dummy Popup", "This is a dummy popup.", null, null);
-            UI_PopupManager.CreateGenericPopup(popup);
+            var popup = new PopupConfig("Dummy Popup", "This is a dummy popup.", null, null);
+            PopupManager.CreateGenericPopup(popup);
         }
     }
 }

@@ -1,25 +1,42 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Elysium.UI
 {
-    [System.Serializable]
-    public class Popup
+    public class Popup : MonoBehaviour, IPopup
     {
-        public string Title;
-        public string Description;
-        public Sprite Icon;
-        public UnityAction Action;
+        [SerializeField] private TMP_Text titleTextComponent = default;
+        [SerializeField] private TMP_Text descriptionTextComponent = default;
+        [SerializeField] private Image iconImageComponent = default;
+        [SerializeField] private Button buttonComponent = default;
 
-        // POPUP STYLE
-        public IPopup Prefab;
-
-        public Popup(string title, string description, Sprite icon = null, UnityAction action = null)
+        public void Setup(PopupConfig _popup)
         {
-            Title = title;
-            Description = description;
-            Icon = icon;
-            Action = action;
+            if (titleTextComponent != null) { titleTextComponent.text = _popup.Title; }
+            if (descriptionTextComponent != null) { descriptionTextComponent.text = _popup.Description; }
+            if (iconImageComponent != null) { iconImageComponent.sprite = _popup.Icon; }
+            if (buttonComponent != null)
+            {
+                buttonComponent.onClick.RemoveAllListeners();
+                if (_popup.Action != null) { buttonComponent.onClick.AddListener(_popup.Action); }
+            }
+        }
+
+        public void SetActionAdditive(UnityAction _action)
+        {
+            buttonComponent.onClick.AddListener(_action);
+        }
+
+        public IPopup Create(Transform _parent)
+        {
+            return Instantiate(this, _parent);
+        }
+
+        public void Dispose()
+        {
+            Destroy(gameObject, 0.1f);
         }
     }
 }

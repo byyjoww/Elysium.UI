@@ -8,7 +8,7 @@ namespace Elysium.UI
     public interface IPopup
     {
         IPopup Create(Transform _parent);
-        void Setup(Popup _popup);
+        void Setup(PopupConfig _popup);
         void SetActionAdditive(UnityAction _action);
         void Dispose();
     }
