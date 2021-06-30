@@ -2,8 +2,7 @@
   "author": "Elysium Entertainment",
   "displayName": "Elysium.UI",
   "dependencies": {
-	"com.coffee.git-dependency-resolver": "https://github.com/mob-sakai/GitDependencyResolverForUnity.git",
-    "com.elysium.core": "https://github.com/byyjoww/Elysium.Core.git",
+    "com.elysium.core": "1.0.0",
     "com.unity.textmeshpro": "2.1.4"
   },
   "hideInEditor": false,
