@@ -16,9 +16,9 @@
       "path": "Samples/Demo"
     },
 	{
-      "displayName": "Resources",
+      "displayName": "Resource",
       "description": "Basic resources for the project, such as prefabs, sprites and materials.",
-      "path": "Samples/Resources"
+      "path": "Samples/Resource"
     }
   ]
 }
