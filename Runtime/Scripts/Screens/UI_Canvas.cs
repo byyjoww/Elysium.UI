@@ -77,7 +77,6 @@ namespace Elysium.UI
     using System;
 #if UNITY_EDITOR
     using UnityEditor;
-#endif
 
     [CustomEditor(typeof(UI_Canvas))]
     public class UI_CanvasEditor : Editor
@@ -108,4 +107,5 @@ namespace Elysium.UI
             canvas.OnValidate();
         }
     }
+#endif
 }
